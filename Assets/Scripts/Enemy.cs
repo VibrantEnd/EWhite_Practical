@@ -9,10 +9,10 @@ public class Enemy : MonoBehaviour
 
     private GameObject player;
     private Transform playerTransform;
-    private SphereCollider sphereCollider;
-    private CapsuleCollider capsuleCollider;
+    private SphereCollider sphereCollider;       //Unsure if these are necessary.
+    private CapsuleCollider capsuleCollider;     //Unsure if these are necessary.
 
-    public bool isBoss;
+    public bool isBoss;                         // This boolean tells if the enemy is the boss or not.
     
 
     public float Health;
@@ -32,8 +32,6 @@ public class Enemy : MonoBehaviour
         sphereCollider = GetComponent<SphereCollider>();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         
@@ -44,7 +42,7 @@ public class Enemy : MonoBehaviour
         }
 
     }
-    public void Massacre()
+    public void Massacre()                  //This function is called when the boss is spawned, and only kills non-boss enemies
     {
         if (!isBoss)
         {
@@ -57,7 +55,7 @@ public class Enemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
-            player.GetComponent<Player>().ScoreAdd(Score);
+            player.GetComponent<Player>().ScoreAdd(Score); //If the enemy that died was the boss, the game finishes and restarts.
             if (isBoss)
             {
                 Debug.Log("YOU WON!!!");
