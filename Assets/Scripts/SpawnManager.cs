@@ -23,8 +23,7 @@ public class SpawnManager : MonoBehaviour
         while(player.GetComponent<Player>().NewScore < 300)
         {
             TimeBetweenSpawns = Random.Range(10, 20);
-            enemyAmount = Random.Range(1, 2);
-            Debug.Log("Spawning has begun!");
+            enemyAmount = Random.Range(1, 3);
 
                 for (int i = 0; enemyAmount > i; i++)
                 {
@@ -49,10 +48,5 @@ public class SpawnManager : MonoBehaviour
     private void SpawnPrefab(GameObject EnemyPrefab)
     {
         Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

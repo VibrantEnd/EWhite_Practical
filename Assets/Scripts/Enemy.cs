@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
 
     private GameObject player;
     private Transform playerTransform;
-    private GameManager gameManager;
     private SphereCollider sphereCollider;
     private CapsuleCollider capsuleCollider;
 
@@ -29,7 +28,6 @@ public class Enemy : MonoBehaviour
         navAgent.speed = Speed;
         player = GameObject.FindWithTag("Player");
         playerTransform = player.transform;
-        gameManager = GetComponent<GameManager>();
         currentHealth = Health;
         sphereCollider = GetComponent<SphereCollider>();
         capsuleCollider = GetComponent<CapsuleCollider>();
@@ -56,7 +54,6 @@ public class Enemy : MonoBehaviour
     public void TakeDamage()
     {
         currentHealth--;
-        Debug.Log("Enemy health is " + currentHealth);
         if (currentHealth <= 0)
         {
             Destroy(gameObject);

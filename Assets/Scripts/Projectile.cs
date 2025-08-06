@@ -15,18 +15,4 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(lifeTime);
         Destroy(gameObject);
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        GameObject otherGameObject = collision.gameObject;
-        Enemy enemyScript = otherGameObject.GetComponent<Enemy>();
-        if (enemyScript != null)
-        {
-            enemyScript.TakeDamage();
-        }
-    }
-
-    void Update()
-    {
-        
-    }
 }

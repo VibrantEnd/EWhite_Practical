@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private float currentCooldown;
     public float FireVelocity = 10.0f;
 
-    private float maxHealth = 100.0f;
+    private float maxHealth = 50.0f;
     private float currentHealth;
     public TextMeshProUGUI healthText;
 
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
         CurrentScore = NewScore;
         if (NewScore >= 300 && !BossSpawned)
         {
-            Instantiate(BossPrefab, new Vector3(0,2,0) + transform.position, Quaternion.identity);
+            Instantiate(BossPrefab, new Vector3(0,7,0) + transform.position, Quaternion.identity);
             BossSpawned = true;
         }
     }
