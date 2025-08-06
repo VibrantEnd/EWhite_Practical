@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private float projectileSpeed = 10.0f;
     private float lifeTime = 5.0f;
+    SphereCollider sphereCollider;
     void Awake()
     {
+        sphereCollider = GetComponent<SphereCollider>();
         StartCoroutine(LifeTime());
     }
     IEnumerator LifeTime()
@@ -14,7 +15,16 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(lifeTime);
         Destroy(gameObject);
     }
-    // Update is called once per frame
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject otherGameObject = collision.gameObject;
+        Enemy enemyScript = otherGameObject.GetComponent<Enemy>();
+        if (enemyScript != null)
+        {
+            enemyScript.TakeDamage();
+        }
+    }
+
     void Update()
     {
         

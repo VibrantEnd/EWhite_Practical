@@ -10,8 +10,10 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private Transform playerTransform;
     private GameManager gameManager;
+    private SphereCollider sphereCollider;
+    private CapsuleCollider capsuleCollider;
 
-    private bool isBoss;
+    public bool isBoss;
     
 
     public float Health;
@@ -28,6 +30,9 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerTransform = player.transform;
         gameManager = GetComponent<GameManager>();
+        currentHealth = Health;
+        sphereCollider = GetComponent<SphereCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -35,6 +40,10 @@ public class Enemy : MonoBehaviour
     {
         
         navAgent.SetDestination(playerTransform.position);
+        if(player.GetComponent<Player>().NewScore > 300)
+        {
+            Massacre();
+        }
 
     }
     public void Massacre()
@@ -44,30 +53,36 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void TakeDamage()
+    {
+        currentHealth--;
+        Debug.Log("Enemy health is " + currentHealth);
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+            player.GetComponent<Player>().ScoreAdd(Score);
+            if (isBoss)
+            {
+                Debug.Log("YOU WON!!!");
+                player.GetComponent<Player>().Restart();
+            }
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
-        if ((CompareTag("Player")) && !isBoss)
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            TakeDamage();
+        }
+        if (collision.gameObject.CompareTag("Player") && !isBoss)
         {
             Destroy(gameObject);
             player.GetComponent<Player>().TakeDamage(Damage);
+            player.GetComponent<Player>().ScoreAdd(Score);
         }
-        else if ((CompareTag("Player")) && isBoss)
+        else if (collision.gameObject.CompareTag("Player") && isBoss)
         {
             player.GetComponent<Player>().TakeDamage(Damage);
-        }
-        if (CompareTag("Projectile"))
-        {
-            currentHealth--;
-            if (currentHealth <= 0)
-            {
-                Destroy(gameObject);
-                player.GetComponent<Player>().ScoreAdd(Score);
-                if (isBoss)
-                {
-                    Debug.Log("YOU WON!!!");
-                    player.GetComponent<Player>().Restart();
-                }
-            } 
         }
     }
 }

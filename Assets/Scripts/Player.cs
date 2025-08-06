@@ -5,7 +5,6 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     private Rigidbody playerRb;
-    private Camera camera;
 
     private float rotationY;
     public float Sensitivity = 1.0f;
@@ -32,12 +31,19 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     public GameObject BossPrefab;
+    public bool BossSpawned;
     void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
         PlayerTransform = GetComponent<Transform>();
         MainPlayer = GetComponent<GameObject>();
         currentCooldown = FireCooldown;
+        currentHealth = maxHealth;
+        healthText.text = currentHealth.ToString();
+        CurrentScore = 0;
+        scoreText.text = CurrentScore.ToString();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -68,14 +74,15 @@ public class Player : MonoBehaviour
     }
     private void FireProjectile()
     {
-        GameObject projectileClone = Instantiate(ProjectilePrefab, PlayerTransform.position, PlayerTransform.rotation);
+        GameObject projectileClone = Instantiate(ProjectilePrefab, PlayerTransform.position + transform.forward * .5f, PlayerTransform.rotation);
         Rigidbody projectileRb = projectileClone.GetComponent<Rigidbody>();
         projectileRb.AddForce(PlayerTransform.forward*FireVelocity, ForceMode.Impulse);
-        currentCooldown += FireCooldown;
+        currentCooldown = FireCooldown;
     }
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        currentHealth = currentHealth - damage;
+        Debug.Log("Your health is " + currentHealth);
         if (currentHealth < 0)
         {
             Debug.Log("You LOSE!!!!");
@@ -90,10 +97,12 @@ public class Player : MonoBehaviour
     public void ScoreAdd(float score)
     {
         NewScore = score + CurrentScore;
-        scoreText.text = "Score: "+CurrentScore;
-        if (CurrentScore >= 300)
+        scoreText.text = NewScore.ToString();
+        CurrentScore = NewScore;
+        if (NewScore >= 300 && !BossSpawned)
         {
-            Instantiate(BossPrefab, (0,0,0), Quaternion.identity);
+            Instantiate(BossPrefab, new Vector3(0,2,0) + transform.position, Quaternion.identity);
+            BossSpawned = true;
         }
     }
 }
