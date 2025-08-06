@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
     {
         
         navAgent.SetDestination(playerTransform.position);
-        if(player.GetComponent<Player>().NewScore > 300)
+        if(player.GetComponent<Player>().NewScore >= 300)
         {
             Massacre();
         }
